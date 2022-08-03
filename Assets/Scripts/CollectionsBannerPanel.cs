@@ -18,6 +18,8 @@ public class CollectionsBannerPanel : MonoBehaviour
     void Start()
     {
         BannerPanel1 data = bannerPanel1;
+        
+        CardsData.Instance.WriteData(bannerPanel1,2);
         for (int i = 0; i < data.bannerPanel.bannerdata.Length; i++)
         {
             GameObject obj = Instantiate(data.bannerdecorationcard);
@@ -89,7 +91,7 @@ public class CollectionsBannerPanel : MonoBehaviour
 
 }
 [System.Serializable]
-public class BannerPanel1
+public class BannerPanel1:Data1
 {
     public GameObject bannerdecorationcard;
     public GameObject bannercontent;

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public class StorePanelScript : MonoBehaviour
 {
@@ -18,14 +19,21 @@ public class StorePanelScript : MonoBehaviour
             return instance; 
         }
     }
+    private void Awake()
+    {
+      
+        CardsData.Instance.WriteData(items,0);
+    }
     void Start()
     {
+        
         CreateCards();
 
     }
 
     private void CreateCards()
     {
+        
         for (int i = 0; i < items.sections.Length; i++)
         {
             GameObject temp = Instantiate<GameObject>(items.sectionprefab);
@@ -116,7 +124,7 @@ public class StorePanelScript : MonoBehaviour
 
 }
 [System.Serializable]
-public class StoreItems 
+public class StoreItems  :Data1
 {
     public Image inventorycardPrefab;
     public GameObject inventoryContent;

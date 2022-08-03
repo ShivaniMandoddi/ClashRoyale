@@ -158,7 +158,7 @@ public class CollectionsTopCard : MonoBehaviour
         {
             if (this.gameObject == data.collections.topcards[i].card)
             {
-                position1 = data.collections.topcards[i].position;
+               // position1 = data.collections.topcards[i].position;
             }
         }
         position1 = transform.position;

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using System.IO;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
-
+using Newtonsoft.Json;
 
 public enum Coins
 {
@@ -20,11 +20,11 @@ public class CardsData : MonoBehaviour
     public Text money;
    
     public Data data=new Data();
+    //Data1 data11 = new Data1();
     Dictionary<string, List<Image>> section = new Dictionary<string, List<Image>>();
     List<Image> cards;
     string filepath;
-   
-   
+
     
     
     #region SINGLETON
@@ -45,19 +45,36 @@ public class CardsData : MonoBehaviour
     #endregion
     #region MONOBEHAVIOUR METHODS
 
+    public Master data1 = new Master();
+    private void Awake()
+    {
+        filepath = Path.Combine(Application.persistentDataPath, "SectionsData");
 
+        //data11.datas.Add(data);
+        //data1.datas.Add(data);
+        data1.coindata = data;
+        //((Data)data1.datas[0]).currentcoins=6;
+     
+       // var jsondata = JsonConvert.SerializeObject(data1);
+        // Debug.Log(data11.datas["Data"]);
+        Debug.Log(JsonUtility.ToJson(data1));
+        WriteFile(data1);
+        ReadFile();
+    }
 
     void Start()
     {
-        filepath = Path.Combine(Application.persistentDataPath, "SectionsData");
+        /*filepath = Path.Combine(Application.persistentDataPath, "SectionsData");
+       
+        data11.datas.Add(JsonUtility.ToJson(data));
         
-        string jsondata=JsonUtility.ToJson(data);
-        Debug.Log(jsondata);
-        
-        WriteFile(jsondata);
-        
-       // ReadFile();
-       // CreateUI();
+        string jsondata= JsonUtility.ToJson(data11);
+       // Debug.Log(data11.datas["Data"]);
+        WriteFile(jsondata);*/
+        coins.text = data.currentcoins.ToString();
+        money.text = data.currentmoney + "$";
+        // ReadFile();
+        // CreateUI();
     }
    /* public void Adddata(Data data)
     {
@@ -79,15 +96,17 @@ public class CardsData : MonoBehaviour
     
     public void ReadFile()                         //Reading the Data
     {
-        string data=File.ReadAllText(filepath);
+        string json=File.ReadAllText(filepath);
+       // var data = JsonConvert.DeserializeObject<List<Data1>>(json);
         Debug.Log(data);
     }
     public Data GetData()              // Getting data from json
     {
         
         string jsondata = File.ReadAllText(filepath);
-        Data data2 = JsonUtility.FromJson<Data>(jsondata);
-        return (data2);
+        Data1 data2 = JsonUtility.FromJson<Data1>(jsondata);
+       
+        return (data);
     }
     
 
@@ -112,7 +131,7 @@ public class CardsData : MonoBehaviour
     }
    
     
-    public void UpdateFile(Data data,Cards1 carddata,GameObject obj)  //Updating card data and json data
+    public void UpdateFile(Data data1,Cards1 carddata,GameObject obj)  //Updating card data and json data
     {
        
         coins.text = data.currentcoins.ToString();
@@ -124,19 +143,48 @@ public class CardsData : MonoBehaviour
        
        
     }
-    public void UpdateFile(Data data) 
+    public void WriteData(Data1 data,int i) 
     {
+        Debug.Log("Writing");
+        switch (i)
+        {
+            case 0: data1.storedata = ((StoreItems)data);
+                break;
+            case 1:
+                data1.collectionscarddata = ((CollectionsPanel1)data);
+             
+                break;
+            case 2:
+                data1.bannerdata = ((BannerPanel1)data);
+                break;
+            default:
+                break;
+        }
+
+        // data1.datas.Add(data);
+        WriteFile(data1);
+        //UpdateFile(data1);
+    }
+    public void UpdateFile(Master data) 
+    {
+       
         string jsondata = JsonUtility.ToJson(data);
         File.WriteAllText(filepath, jsondata);
     }
-   
 
-    public void WriteFile(string data)    // Creating json data
+
+    public void WriteFile(Master data)    // Creating json data
     {
-       // if(!File.Exists(filepath))
+        // if(!File.Exists(filepath))
         //{
-            
-            File.WriteAllText(filepath,data);
+
+         File.WriteAllText(filepath, JsonUtility.ToJson(data,true));
+       // File.WriteAllText(filepath, JsonConvert.SerializeObject(data, Formatting.Indented));
+       /* File.WriteAllText(filepath, JsonConvert.SerializeObject(data, Formatting.Indented,
+        new JsonSerializerSettings()
+        {
+            ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+        }));*/
         //}
     }
     #endregion
@@ -144,12 +192,26 @@ public class CardsData : MonoBehaviour
 }
 #region CLASSES
 
-
-
-
-
 [System.Serializable]
-public class Data 
+public class Master
+{
+    //public List<Data1> datas = new List<Data1>();
+    //public ArrayList datas = new ArrayList();
+   
+    
+    public Data coindata;
+    public StoreItems storedata;
+    public CollectionsPanel1 collectionscarddata;
+    public BannerPanel1 bannerdata;
+    
+}
+[System.Serializable]
+public class Data1
+{
+
+}
+[System.Serializable]
+public class Data :Data1
 {
    
     public int currentcoins;
@@ -205,7 +267,7 @@ public class InfoCards : Cards1
     public bool isdisplay;
     public GameObject button;
     public bool isused;
-    public Vector3 position;
+    
     public float totallevels;
     public float levels;
 

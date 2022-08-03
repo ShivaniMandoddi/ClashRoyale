@@ -58,7 +58,7 @@ public class InventoryScript : MonoBehaviour
     }
     public void DisplayUI(GameObject obj, Cards1 carddata) //Displaying Data
     {
-        Debug.Log("Inventory");
+       
         if (obj == this.gameObject)
         {
             cardSprite.sprite = carddata.cardSprite;

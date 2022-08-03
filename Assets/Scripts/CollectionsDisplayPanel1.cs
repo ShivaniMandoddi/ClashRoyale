@@ -19,6 +19,10 @@ public class CollectionsDisplayPanel1 : MonoBehaviour
     void Start()
     {
         CollectionsPanel1 data= collectionsPanel;
+       
+      
+        CardsData.Instance.WriteData(collectionsPanel,1);
+        
         data.collections.totalpresentcards = 0;
         for (int i = 0; i < data.collections.topcards.Length; i++)
         {
@@ -29,7 +33,7 @@ public class CollectionsDisplayPanel1 : MonoBehaviour
                 obj = Instantiate(data.topcardprefab);
                 obj.transform.parent = data.collections.unusedcontent.transform;
                 data.collections.topcards[i].card = obj;
-                data.collections.topcards[i].position = data.collections.topcards[i].card.transform.position;
+               // data.collections.topcards[i].position = data.collections.topcards[i].card.transform.position;
                 data.collections.topcards[i].isused = true;
                 data.collections.topcards[i].card.GetComponent<CollectionsTopCard>().buttonText.text = "Use";
                 data.collections.topcards[i].button = obj.GetComponent<CollectionsTopCard>().buttons;
@@ -42,7 +46,7 @@ public class CollectionsDisplayPanel1 : MonoBehaviour
                 data.collections.topcards[i].card = obj;
                 data.collections.image[i].gameObject.SetActive(false);
                 data.collections.totalpresentcards++;
-                data.collections.topcards[i].position = data.collections.topcards[i].card.transform.position;
+                //data.collections.topcards[i].position = data.collections.topcards[i].card.transform.position;
                 data.collections.topcards[i].button = obj.GetComponent<CollectionsTopCard>().buttons;
             }
             CollectionsTopCard[] collectionsTopCards = FindObjectsOfType<CollectionsTopCard>(true);
@@ -95,7 +99,7 @@ public class CollectionsDisplayPanel1 : MonoBehaviour
    
 }
 [System.Serializable]
-public class CollectionsPanel1
+public class CollectionsPanel1:Data1
 {
     public Collections collections;
     public GameObject topcardContent;

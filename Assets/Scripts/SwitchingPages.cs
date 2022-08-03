@@ -38,6 +38,10 @@ public class SwitchingPages : MonoBehaviour
 
     void Start()
         {
+        SetAllPanelsFalse();
+        SettingCollectionPanelsFalse();
+        displayPanel.SetActive(true);
+        storePanel.SetActive(true);
             homePanel.SetActive(true);
             //backButton.SetActive(false);
         }
